@@ -3,20 +3,41 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import MasnoryLayout from './MasnoryLayout';
 import Spinner from './Spinner';
 import { Client } from './../Client';
-import { SearchQuery } from '../utils/data';
+import { AllPins, SearchQuery } from '../utils/data';
 
 
 const Feed = () => {
   const [Loading, setLoading] = useState(false);
   const {categoryId} = useParams();
+  const [Pins, setPins] = useState(null);
+
   
   useEffect(() => {
     setLoading(true);
+    if(!categoryId){
+     const  query =  AllPins ();
+           Client.fetch(query).then(async (data)=>{
+           await console.log(data);
+            setLoading(false);
+            setPins(data);
+          })
+          .catch((error) => {
+            console.error(error);
+            setLoading(false);
+          });
+    }
     if(categoryId){
        const query = SearchQuery(categoryId);
           Client.fetch(query).then((data)=>{
-              console.log(data);
+            setLoading(false);
+            setPins(data);
+            console.log(data);
+           
           })
+          .catch((error) => {
+            console.error(error);
+            setLoading(false);
+          });
       // console.log(getSearch+ "searching")
       
     }

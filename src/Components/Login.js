@@ -13,6 +13,10 @@ import { redirect } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
   useEffect(() => {
+    /* 
+    What is GAPI script?
+GAPI is Google's client library for browser-side JavaScript. It's used in Google Sign-in, Google Drive, and thousands of internal and external web pages for easily connecting with Google APIs.
+    */
     gapi.load("client:auth2",()=>{
       gapi.auth2.init({clientId:process.env.REACT_APP_GOOGLE_CLIENT_ID})
     })
@@ -21,7 +25,7 @@ const Login = () => {
   },[] )
   
   const responseGoogle =async(response)=>{
-    console.log(response.profileObj);
+     
     localStorage.setItem('user', JSON.stringify(response.profileObj));
     
     const {name, googleId, imageUrl} = response.profileObj;
@@ -32,7 +36,7 @@ const Login = () => {
       userName: name,
       image:imageUrl
     }
-    console.log(doc);
+   
     Client.createIfNotExists(doc).then((response) => {
       navigate('/', {replace:true});
   }).catch((error) => {

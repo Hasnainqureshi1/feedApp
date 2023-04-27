@@ -4,6 +4,7 @@ import {AiFillCloseCircle} from 'react-icons/ai'
 import { Link,Route,Routes } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import {UserProfile , SideBar} from './../Components/';
+import { useNavigate } from "react-router-dom";
 
 import { Client } from '../Client'
 import Pins from './Pins'
@@ -11,16 +12,20 @@ import data from '../utils/data'
 import {userQuery} from './../utils/data';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [ToggleSideBar, setToggleSideBar] = useState(false);
   const [user, setUser] = useState('');
   const scrollRef = useRef(null)
   
   const UserInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')):localStorage.clear;
- console.log(user.image);
+ 
   
   useEffect(() => {
+     if(!UserInfo){
+      navigate('/login')
+     }
   const query  = userQuery(UserInfo?.googleId);
- 
+     
   Client.fetch(query)
         .then((data) =>{
           console.log(data[0]);
@@ -50,9 +55,11 @@ const Home = () => {
           <Link to= '/'>
               <img src={logo} alt="ShareMe" className='w-28' />          
           </Link>
-          <Link to= {`user-profile/${user._id}`}>
-              <img src={user.image} alt="Profile" className='w-28 ' />          
-          </Link>
+          {user && user._id &&
+  <Link to= {`user-profile/${user._id}`}>
+    <img src={user.image} alt="Profile" className='w-28 ' />          
+  </Link>
+}
           </div>
         {ToggleSideBar && (
           <div className='fixed w-4/5 bg-white h-screen overflow-y-auto shadow-md z-10 animate-slide-in '>
