@@ -4,6 +4,7 @@ import MasnoryLayout from './MasnoryLayout';
 import Spinner from './Spinner';
 import { Client } from './../Client';
 import { AllPins, SearchQuery } from '../utils/data';
+ 
 
 
 const Feed = () => {
@@ -16,10 +17,13 @@ const Feed = () => {
     setLoading(true);
     if(!categoryId){
      const  query =  AllPins ();
+
            Client.fetch(query).then(async (data)=>{
-           await console.log(data);
+          //  await console.log(data);
+           console.log(data);
             setLoading(false);
             setPins(data);
+            console.log(Pins)
           })
           .catch((error) => {
             console.error(error);
@@ -51,7 +55,7 @@ const Feed = () => {
   if(Loading) return <Spinner message = 'We are adding new ideas to your Feed'/> 
 
   return (
-    <div>Feed</div>
+    <div>{Pins && <MasnoryLayout pins ={Pins}/> }</div>
   )
 }
 

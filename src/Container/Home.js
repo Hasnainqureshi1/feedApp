@@ -10,6 +10,8 @@ import { Client } from '../Client'
 import Pins from './Pins'
 import data from '../utils/data'
 import {userQuery} from './../utils/data';
+import {fetchUser} from '../utils/fetchUser'
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const Home = () => {
   const [user, setUser] = useState('');
   const scrollRef = useRef(null)
   
-  const UserInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')):localStorage.clear;
+  const UserInfo =  fetchUser();
  
   
   useEffect(() => {
@@ -46,6 +48,7 @@ const Home = () => {
     <div className='flex bg-black-50 md:flex-row flex-col h-screen transaction-height duration-75 ease-out'>
         <div className='hidden md:flex h-screen flex-initial'>
           <SideBar user = {user && user}/>
+       
         </div>
         <div className='flex md:hidden  flex-initial'>
           {/* ------------------- Mobile sidebar -----------------  */}
